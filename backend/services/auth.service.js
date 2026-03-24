@@ -11,7 +11,13 @@ export const loginUser = async ({ email, password }) => {
   if (!isMatch) throw new AppError("Invalid credentials", 401);
 
   return {
-    user: { id: user._id, name: user.name, email: user.email },
-    token: generateToken(user._id),
+    user: { id: user._id, name: user.name, email: user.email, role: user.role },
+    token: generateToken(user),
   };
+};
+
+export const getUserProfile = async (userId) => {
+  const user = await User.findById(userId).select("-password");
+  if (!user) throw new AppError("User not found", 404);
+  return user;
 };

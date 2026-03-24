@@ -13,6 +13,7 @@ export const createUser = async (data) => {
     name: data.name,
     email: data.email,
     password: hashed,
+    role: data.role,
   });
 
   return user;
@@ -41,6 +42,9 @@ export const updateUser = async (id, data) => {
     user.password = await bcrypt.hash(data.password, 10);
   }
 
+  if (data.role) {
+    user.role = data.role;
+  }
   return await user.save();
 };
 
